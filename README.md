@@ -2,7 +2,7 @@
 
 ## Introduction
 (CVPR 2023) This repository provides an implementation of Hierarchical Supervision and Shuffle Data Augmentation for 3D Semi-Supervised Object Detection (HSSDA).
-Our arXiv report is [here](https://arxiv.org/pdf/2304.01464.pdf).
+Our arXiv report is [here](https://arxiv.org/abs/2304.01464).
 ![image](pipeline.png)
 
 ## Installation
