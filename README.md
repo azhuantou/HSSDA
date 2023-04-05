@@ -2,16 +2,14 @@
 
 ## Introduction
 (CVPR 2023) This repository provides an implementation of Hierarchical Supervision and Shuffle Data Augmentation for 3D Semi-Supervised Object Detection (HSSDA).
-
+Our arXiv report is [here](https://arxiv.org/pdf/2304.01464.pdf).
 ![image](pipeline.png)
 
 ## Installation
 Prease refer to the original [README.md](https://github.com/open-mmlab/OpenPCDet/blob/master/docs/INSTALL.md) for installation and usage of OpenPCDet.
 
-## Data Preparation
-
-### KITTI Dataset
-Please download the official [KITTI 3D object detection](http://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=3d) dataset and organize the downloaded files as follows (the road planes could be downloaded from [road plane](https://drive.google.com/file/d/1d5mq0RXRnvHPVeKx6Q612z0YRO1t2wAp/view?usp=sharing), which are optional for data augmentation in the training):
+### Data Preparation
+Please download the official [KITTI 3D object detection](http://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=3d) dataset and organize the downloaded files as follows (the road planes could be downloaded from [road plane](https://drive.google.com/file/d/1d5mq0RXRnvHPVeKx6Q612z0YRO1t2wAp/view?usp=sharing)):
 
 ```
 HSSDA
@@ -21,7 +19,7 @@ HSSDA
 │   │   │── ImageSets_3dioumatch
 │   │   │── semi_supervised_data_3dioumatch
 │   │   │── training
-│   │   │   ├──calib & velodyne & label_2 & image_2 & (optional: planes) & (optional: depth_2)
+│   │   │   ├──calib & velodyne & label_2 & image_2 & planes & depth_2
 │   │   │── testing
 │   │   │   ├──calib & velodyne & image_2
 ├── pcdet
@@ -36,21 +34,29 @@ python -m pcdet.datasets.kitti.kitti_dataset_full create_kitti_infos tools/cfgs/
 
 Then, cut the generated three files  (`gt_database`, `kitti_dbinfos_train.pkl` and `kitti_infos_train.pkl`) into the `kitti/origin_label` folder.
 
-Take generate 2% labeled scenes as an examples:
+```bash
+cd data/kitti
+mv kitti_dbinfos_train.pkl origin_label/
+mv kitti_infos_train.pkl origin_label/
+mv gt_database origin_label/
+cd ../..
+```
+
+Then, generate data split:
 
 ```bash
 cd tools
 python split.py <label_ratio> <split_num>
 ```
 
- For example, training the PV-RCNN with 2% labeled scene:
+For example, training the PV-RCNN with 2% labeled scene:
 
 ```bash
 cd tools
 python split.py 0.02 1
 ```
 
-Then copy generated `kitti_dbinfos_train.pkl` and `kitti_infos_train.pkl` into the kitti data path.
+Then, copy generated `kitti_dbinfos_train.pkl` and `kitti_infos_train.pkl` into the kitti data path.
 
 ```bash
 cd ../data/kitti
@@ -58,20 +64,22 @@ cp semi_supervised_data_3dioumatch/scene_0.02/1/kitti_infos_train.pkl  ./
 cd ../..
 ```
 
-Then generate the new `gt_database` based on the split.
+Then, generate the new `gt_database` based on the split.
 
 ```python 
 python -m pcdet.datasets.kitti.kitti_dataset create_kitti_infos tools/cfgs/dataset_configs/kitti_dataset.yaml
 ```
 
-## Burn-in stage
+### Burn-in stage
+
+Please download the pre-trained model (pv_rcnn_0.02_1) in [Google Drive](https://drive.google.com/drive/folders/1bTE2OAlTA5vWJ4g9yhxkf_7qODSZjOpr) or run the following script for training.
 
 ```python 
 cd tools
 python train.py --cfg_file cfgs/kitti_models/pv_rcnn.yaml --batch_size 8 --workers 4 --extra_tag pv_rcnn_002_1
 ```
 
-## Training
+### Training
 
 After the burn-in stage, copy the `semi_supervised_data_3dioumatch/scene_0.02/1/kitti_infos_train_include_unlabel.pkl` into `data/kitti` folder, and rename it as `kitti_infos_train.pkl` to replace the original pkl file.
 
@@ -98,10 +106,12 @@ cd ../../tools
 sh scripts/dist_train.sh \
 --cfg_file cfgs/kitti_models/pv_rcnn_ssl.yaml \
 --extra_tag pv_rcnn_002_1 --batch_size 12 \
---pretrained_model ../output/kitti_models/pv_rcnn/pv_rcnn_002_1/ckpt/checkpoint_epoch_10.pth \
+--pretrained_model <path_to_pretrained_model_pv_rcnn_0.02_1> \
 --labeled_frame_idx ../data/kitti/semi_supervised_data_3dioumatch/scene_0.02/1/label_idx.txt
 ```
 
-## Acknowledgement
-This code is based on [OpenPCDet](https://github.com/open-mmlab/OpenPCDet).
+Please find tunable parameters in the script.
+
+### Acknowledgement
+This code is based on [OpenPCDet](https://github.com/open-mmlab/OpenPCDet) and [3DIoUMatch](https://github.com/THU17cyz/3DIoUMatch-PVRCNN).
 
