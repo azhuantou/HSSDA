@@ -51,6 +51,11 @@ def get_kitti_semi_data_based_on_3dioumatch_imageset(ratio_of_scene, split_idx):
         sample_info_include_unlabed_scene.append(copy.deepcopy(origin_train_anns[i]))
 
     # only labeled scene info
+
+    directory = os.path.dirname(out_pkl_path_label)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
     with open(out_pkl_path_label, 'wb') as f:
         pickle.dump(sample_info, f)
     f.close()

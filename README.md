@@ -2,7 +2,7 @@
 
 ## Introduction
 (CVPR 2023) This repository provides an implementation of Hierarchical Supervision and Shuffle Data Augmentation for 3D Semi-Supervised Object Detection (HSSDA).
-Our arXiv report is [here](https://arxiv.org/abs/2304.01464).
+Our arXiv report is [here](https://arxiv.org/pdf/2304.01464.pdf).
 ![image](pipeline.png)
 
 ## Installation
@@ -17,7 +17,6 @@ HSSDA
 │   ├── kitti
 │   │   │── ImageSets
 │   │   │── ImageSets_3dioumatch
-│   │   │── semi_supervised_data_3dioumatch
 │   │   │── training
 │   │   │   ├──calib & velodyne & label_2 & image_2 & planes & depth_2
 │   │   │── testing
@@ -36,6 +35,7 @@ Then, cut the generated three files  (`gt_database`, `kitti_dbinfos_train.pkl` a
 
 ```bash
 cd data/kitti
+mkdir origin_label
 mv kitti_dbinfos_train.pkl origin_label/
 mv kitti_infos_train.pkl origin_label/
 mv gt_database origin_label/
