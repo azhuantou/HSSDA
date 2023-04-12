@@ -56,7 +56,7 @@ cd tools
 python split.py 0.02 1
 ```
 
-Then, copy generated `kitti_dbinfos_train.pkl` and `kitti_infos_train.pkl` into the kitti data path.
+Then, copy generated `kitti_infos_train.pkl` into the kitti data path.
 
 ```bash
 cd ../data/kitti
