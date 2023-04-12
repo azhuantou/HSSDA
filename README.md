@@ -64,7 +64,7 @@ cp semi_supervised_data_3dioumatch/scene_0.02/1/kitti_infos_train.pkl  ./
 cd ../..
 ```
 
-Then, generate the new `gt_database` based on the split.
+Then, generate the new `gt_database` and `kitti_dbinfos_train.pkl` based on the split.
 
 ```python 
 python -m pcdet.datasets.kitti.kitti_dataset create_kitti_infos tools/cfgs/dataset_configs/kitti_dataset.yaml
