@@ -135,9 +135,14 @@ def train_model_ssl(model, optimizer, train_loader, dist_train, cfg, args, logge
                         if det_annos is not None and rank == 0:
                             dual_threshold = merge_result(det_annos, aug_det_annos, cur_epoch,
                                                           ckpt_save_dir, root_path, label_frame_idx)
+                            np.save('dual_threshold', dual_threshold)
                     else:
                         dual_threshold = merge_result(det_annos, aug_det_annos, cur_epoch,
                                                       ckpt_save_dir, root_path, label_frame_idx)
+
+                    if dist_train:
+                        dist.barrier()
+                        dual_threshold = np.load('dual_threshold.npy', allow_pickle=True).tolist()
 
                 train_set, train_loader, train_sampler = build_dataloader(
                     dataset_cfg=cfg.DATA_CONFIG,

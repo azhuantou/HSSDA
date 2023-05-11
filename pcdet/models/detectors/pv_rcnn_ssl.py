@@ -473,6 +473,8 @@ class GetPseudoLabel:
             select_mid_flag = select_mid_flag & iou_flag
             select_mid_flag = select_mid_flag & aug_mid_flag
 
+            select_mid_flag[ped_idx] = np.array([False] * sum(ped_idx)) 
+
             select_mid_weight.append(pred_score[select_mid_flag] * roi_score[select_mid_flag])  # get soft-weight
 
             start_idx = len(train_box)
