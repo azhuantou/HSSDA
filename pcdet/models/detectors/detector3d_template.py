@@ -28,7 +28,7 @@ class Detector3DTemplate(nn.Module):
     @property
     def mode(self):
         return 'TRAIN' if self.training else 'TEST'
-
+#
     def update_global_step(self):
         self.global_step += 1
 

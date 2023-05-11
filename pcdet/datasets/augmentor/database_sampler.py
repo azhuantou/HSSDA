@@ -243,12 +243,11 @@ class DataBaseSampler(object):
         Returns:
 
         """
-        if 'cur_epoch' in data_dict.keys():
+        if 'cur_epoch' in data_dict.keys(): #
             cur_epoch = data_dict['cur_epoch']
             if cur_epoch % 5 == 0 and cur_epoch not in self.seen_epoch:
                 self.re_init()
                 self.seen_epoch.append(cur_epoch)
-                # print('re init database!!')
 
         gt_boxes = data_dict['gt_boxes']
         gt_names = data_dict['gt_names'].astype(str)

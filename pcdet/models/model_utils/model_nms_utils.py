@@ -34,7 +34,7 @@ def multi_classes_nms(cls_scores, box_preds, nms_config, score_thresh=None):
         score_thresh:
 
     Returns:
-
+#
     """
     pred_scores, pred_labels, pred_boxes = [], [], []
     for k in range(cls_scores.shape[1]):

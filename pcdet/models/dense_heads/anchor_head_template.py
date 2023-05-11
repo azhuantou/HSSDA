@@ -89,7 +89,7 @@ class AnchorHeadTemplate(nn.Module):
     def assign_targets(self, gt_boxes, low_idx=None):
         """
         Args:
-            gt_boxes: (B, M, 8)
+            gt_boxes: (B, M, 8) @
         Returns:
 
         """

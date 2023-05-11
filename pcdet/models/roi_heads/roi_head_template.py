@@ -106,7 +106,7 @@ class RoIHeadTemplate(nn.Module):
         with torch.no_grad():
             targets_dict = self.proposal_target_layer.forward(batch_dict)
 
-        rois = targets_dict['rois']  # (B, N, 7 + C)
+        rois = targets_dict['rois']  # (B, N, 7 +  C)
         gt_of_rois = targets_dict['gt_of_rois']  # (B, N, 7 + C + 1)
         targets_dict['gt_of_rois_src'] = gt_of_rois.clone().detach()
 

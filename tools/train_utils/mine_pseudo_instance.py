@@ -353,7 +353,7 @@ def merge_result(test_anns, aug_test_anns, cur_epoch, ckpt_save_dir, root_path, 
         out_anns = {}
         count += sum(select_flag)
 
-        if sum(select_flag) > 0:# and len(train_box) == 0:
+        if sum(select_flag) > 0:
 
             select_fg_box = cur_test_anns['boxes_lidar']
             lidar_root = root_path / 'data' / 'kitti' / 'training' / 'velodyne'
